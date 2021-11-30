@@ -14,9 +14,12 @@ class DB
     private function __construct()
     {
         $dsn = 'mysql:host=' . $this->dbhost . ';dbname=' . $this->dbname;
-        $this->connection = new PDO($dsn, $this->dbuser, $this->dbpass);
-        $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        return $this;
+        try {
+            $this->connection = new PDO($dsn, $this->dbuser, $this->dbpass);
+            $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
     }
 
     public static function getInstance()
@@ -49,5 +52,4 @@ class DB
         $this->query->execute($params);
         return $this;
     }
-
 }
